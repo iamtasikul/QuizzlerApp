@@ -31,6 +31,21 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
+  void checkAnswer(bool userPickedAnswer) {
+    bool correctAnswer = quizBrain.getQuestionAnswer();
+  
+    setState(() {
+    if (userPickedAnswer == correctAnswer) {
+      scoreKeeper.add(Icon(Icons.check, color:Colors.green));
+    } else {
+      scoreKeeper.add(Icon(Icons.close, color:Colors.red));
+    }
+
+    
+      quizBrain.nextQuestion();
+    });
+  }
+
   // List<String> questions = [
   //   'You can lead a cow down stairs but not up stairs.',
   //   'Approximately one quarter of human bones are in the feet.',
@@ -72,31 +87,18 @@ class _QuizPageState extends State<QuizPage> {
           child: Padding(
             padding: EdgeInsets.all(15.0),
             child: FlatButton(
-              textColor: Colors.white,
-              color: Colors.green,
-              child: Text(
-                'True',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
+                textColor: Colors.white,
+                color: Colors.green,
+                child: Text(
+                  'True',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                  ),
                 ),
-              ),
-              onPressed: () {
-                //quizBrain.questionBank[questionNumber].questionAnswer=true;
-                bool correctAnswer =
-                    quizBrain.getQuestionAnswer();
-
-                if (correctAnswer == true) {
-                  print('user got in right');
-                } else {
-                  print('user got in false');
-                }
-
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
-              },
-            ),
+                onPressed: () {
+                  checkAnswer(true);
+                }),
           ),
         ),
         Expanded(
@@ -112,19 +114,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctAnswer =
-                    quizBrain.getQuestionAnswer();
-
-                if (correctAnswer == false) {
-                  print('user got in right');
-                } else {
-                  print('user got in false');
-                }
-
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
-                
+                checkAnswer(false);
               },
             ),
           ),
